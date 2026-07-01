@@ -7,11 +7,11 @@ import postRoutes from './routes/posts.js'
 
 const app = express();
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8000;
 
 app.use(express.json());
-app.use('/api/posts', postRoutes)
 app.use(express.urlencoded({ extended: true }));
+app.use('/api/posts', postRoutes)
 
 mongoose.connect(process.env.MONGODB_URI).then(() => {
     console.log("Connected to MongoDB");})
