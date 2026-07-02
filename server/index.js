@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import express from 'express';
 import 'dotenv/config'
 
+import authRoutes from './routes/auth.js'
 import postRoutes from './routes/posts.js'
 import errorHandler from './middleware/errorHandler.js'
 
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/api/posts', postRoutes)
 app.use(errorHandler);
+app.use('/api/auth', authRoutes)
 
 mongoose.connect(process.env.MONGODB_URI).then(() => {
     console.log("Connected to MongoDB");})

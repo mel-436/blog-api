@@ -1,10 +1,12 @@
 // ./routes/posts.js
 import express from "express";
 import Post from "../models/Post.js";
+import protect from '../middleware/protect.js'
 
 import { validatePost, checkValidation } from '../middleware/validatePost.js';
 
 const router = express.Router();
+
 
 // GET all posts
 router.get("/", async (req,res,next) => {
@@ -33,7 +35,7 @@ router.get("/:id", async (req, res, next) => {
 })
 
 // POST a new post
-router.post("/", validatePost, checkValidation, async (req, res, next) => {
+router.post("/", protect, validatePost, checkValidation, async (req, res, next) => {
     // console.log("POST request received to create a new post");
     try{
         const newPost = new Post(req.body);
@@ -46,7 +48,7 @@ router.post("/", validatePost, checkValidation, async (req, res, next) => {
 })
 
 // PUT to update a post by ID
-router.put("/:id", validatePost, checkValidation, async (req, res, next) => {
+router.put("/:id", protect, validatePost, checkValidation, async (req, res, next) => {
     // console.log(`PUT request received to update post with ID: ${req.params.id}`);
     try{
         const updatedPost = await Post.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -62,7 +64,7 @@ router.put("/:id", validatePost, checkValidation, async (req, res, next) => {
 })
 
 // DELETE a post by ID
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:id", protect, async (req, res, next) => {
     // console.log(`DELETE request received to delete post with ID: ${req.params.id}`);
     try{
         const deletedPost = await Post.findByIdAndDelete(req.params.id);
